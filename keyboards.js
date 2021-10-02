@@ -69,7 +69,12 @@ bot.on('message', async (message) => {
             CLICK_TOKEN,
             "nimadir",
             "UZS",
-            products
+            products, {
+                need_phone_number: true,
+                need_shipping_address: true,
+                need_name: true,
+                photo_url: "https://picsum.photos/300"
+            }
         )
     }
 })
