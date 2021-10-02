@@ -52,8 +52,25 @@ bot.on('message', async (message) => {
             reply_markup: inline_keyboard
         })
     }
+
+    const products = [
+        {
+            label: "iPhone 13 Pro Max",
+            amount: (13000000) * 100
+        }
+    ]
+
     if(text == "/payment"){
-        bot.sendInvoice()
+        bot.sendInvoice(
+            chat_id,
+            "Umumiy hisob",
+            "Siz Havas do'konidan ... narsalarni sotib oldingiz",
+            "tulov payload",
+            CLICK_TOKEN,
+            "nimadir",
+            "UZS",
+            products
+        )
     }
 })
 
@@ -68,4 +85,13 @@ bot.on('callback_query', async (query) => {
             message_id: message_id
         })
     }
+})
+
+bot.on('pre_checkout_query', (checkout) => {
+    console.log(checkout);
+    bot.answerPreCheckoutQuery(checkout.id, true)
+})
+
+bot.on('successful_payment', (answer) => {
+    bot.sendMessage(answer.chat.id, "Sizni tulovingiz qabul qilindi, tez orada yetkazib beramiz)")
 })
