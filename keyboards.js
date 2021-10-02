@@ -1,31 +1,71 @@
 const bot = require('./config')
+const CLICK_TOKEN = `398062629:TEST:999999999_F91D8F69C042267444B74CC0B3C747757EB0E065`
 
 bot.on('message', async (message) => {
     const chat_id = message.chat.id
     const text = message.text
     const name = message.from.first_name
     const message_id = message.message_id
-
+    
+    const inline_keyboard = {
+        inline_keyboard: [
+            [
+                {
+                    text: "Toshkent",
+                    callback_data: "tashkent"
+                },
+                {
+                    text: "Buxoro",
+                    callback_data: "bukhara"
+                },
+            ],
+            [
+                {
+                    text: "Saytimizga marhamat",
+                    url: "https://google.com"
+                }
+            ]
+        ]
+    }
+    
     const keyboard = {
         resize_keyboard: true,
         one_time_keyboard: true,
         keyboard: [
             [
                 {
-                    text: "Toshkent"
+                    text: "Toshkent",
+                    request_contact: true
                 },
                 {
-                    text: "Boshqa"
+                    text: "Boshqa",
+                    request_location: true
                 }
             ]
         ]
     }
-
+    
     if(text == '/start'){
         bot.sendMessage(chat_id, `Salom <b>${name}</b>`, {
             parse_mode: 'HTML',
             reply_to_message_id: message_id,
-            reply_markup: keyboard
+            reply_markup: inline_keyboard
+        })
+    }
+    if(text == "/payment"){
+        bot.sendInvoice()
+    }
+})
+
+bot.on('callback_query', async (query) => {
+    const chat_id = query.from.id
+    const data = query.data
+    const message_id = query.message.message_id
+
+    if(data == "tashkent"){
+        bot.editMessageText("Siz Toshkentni tanladingiz!", {
+            chat_id: chat_id,
+            message_id: message_id
         })
     }
 })
